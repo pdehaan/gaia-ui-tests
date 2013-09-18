@@ -153,8 +153,7 @@ class Persona(Base):
 
     def unpackAssertion(self, assertion):
         # ignore signatures; we're not a verifier
-        header, claim, _, payload, _ = assertion.split('.');
+        header, claim, _, payload, _ = assertion.split('.')
         return {"header": self.decode(header),
                 "claim": self.decode(claim),
                 "payload": self.decode(payload)}
-
