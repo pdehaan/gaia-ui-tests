@@ -2,6 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+from marionette.by import By
 from gaiatest import GaiaTestCase
 from gaiatest.apps.persona.app import Persona
 from gaiatest.mocks.persona_test_user import PersonaTestUser
@@ -12,13 +13,13 @@ AUDIENCE = "app://uitest.gaiamobile.org"
 
 class TestPersonaStandard(GaiaTestCase):
 
-    _mozId_tests_button_locator = ('link text', 'navigator.mozId tests')
-    _standard_request_button_locator = ('id', 't-request')
-    _app_identity_frame = ('css selector', 'iframe[src*="identity"]')
+    _mozId_tests_button_locator = (By.LINK_TEXT, 'navigator.mozId tests')
+    _standard_request_button_locator = (By.ID, 't-request')
+    _app_identity_frame = (By.CSS_SELECTOR, 'iframe[src*="identity"]')
 
-    _app_ready_event = ('css selector', 'li.ready')
-    _app_login_event = ('css selector', 'li.login')
-    _app_login_assertion_text = ('css selector', 'li.login div.assertion')
+    _app_ready_event = (By.CSS_SELECTOR, 'li.ready')
+    _app_login_event = (By.CSS_SELECTOR, 'li.login')
+    _app_login_assertion_text = (By.CSS_SELECTOR, 'li.login div.assertion')
 
     def setUp(self):
         GaiaTestCase.setUp(self)
@@ -66,7 +67,7 @@ class TestPersonaStandard(GaiaTestCase):
         # Validate assertion
         # XXX hack: previous sign ins can result in multiple assertions printed, we want
         # the last one, but don't really have an event for it.  We sleep and get lucky
-        time.sleep(3)
+        time.sleep(6)
         assertion = self.marionette.find_elements(*self._app_login_assertion_text)[-1].text
         unpacked = persona.unpackAssertion(assertion)
 
@@ -79,4 +80,3 @@ class TestPersonaStandard(GaiaTestCase):
         self.assertEqual(verified['status'], 'okay')
         self.assertEqual(verified['email'], self.user.email)
         self.assertEqual(verified['audience'], AUDIENCE)
-
